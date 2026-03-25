@@ -1,0 +1,1012 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Enter the Upside Down — A Stranger Things themed developer portfolio by Rhythm Gupta.">
+    <title>The Upside Down | Enter...</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Righteous&family=Special+Elite&family=Creepster&display=swap" rel="stylesheet">
+    <style>
+        /* ============================================
+           INTRO SPLASH — STRANGER THINGS CHRISTMAS LIGHTS
+           Realistic Byers House Scene
+           ============================================ */
+        *, *::before, *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #0a0806;
+            overflow: hidden;
+            width: 100vw;
+            height: 100vh;
+            font-family: 'Special Elite', cursive;
+            cursor: default;
+            position: relative;
+        }
+
+        /* ---------- DARK ROOM / BYERS HOUSE WALL ---------- */
+        .room {
+            position: fixed;
+            inset: 0;
+            background:
+                /* Warm corner lamp glow */
+                radial-gradient(ellipse at 15% 85%, rgba(80, 50, 20, 0.25) 0%, transparent 45%),
+                radial-gradient(ellipse at 85% 90%, rgba(60, 35, 15, 0.15) 0%, transparent 40%),
+                /* Center dim ambient from lights */
+                radial-gradient(ellipse at 50% 25%, rgba(40, 25, 12, 0.35) 0%, transparent 55%),
+                #0a0806;
+            z-index: 0;
+        }
+
+        /* Wood paneling wallpaper — vertical planks */
+        .room::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background:
+                /* Vertical wood plank lines */
+                repeating-linear-gradient(
+                    90deg,
+                    transparent 0px,
+                    transparent 58px,
+                    rgba(139, 90, 43, 0.04) 58px,
+                    rgba(139, 90, 43, 0.06) 60px,
+                    rgba(139, 90, 43, 0.04) 62px,
+                    transparent 62px
+                ),
+                /* Horizontal grain — subtle */
+                repeating-linear-gradient(
+                    0deg,
+                    transparent 0px,
+                    transparent 3px,
+                    rgba(120, 80, 35, 0.015) 3px,
+                    rgba(120, 80, 35, 0.015) 4px
+                ),
+                /* Wider joint pattern */
+                repeating-linear-gradient(
+                    90deg,
+                    transparent 0px,
+                    transparent 174px,
+                    rgba(0, 0, 0, 0.12) 174px,
+                    rgba(0, 0, 0, 0.12) 176px
+                );
+            z-index: 1;
+        }
+
+        /* Grime/age overlay */
+        .room::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background:
+                radial-gradient(ellipse at 30% 40%, rgba(0,0,0,0.15) 0%, transparent 50%),
+                radial-gradient(ellipse at 70% 60%, rgba(0,0,0,0.1) 0%, transparent 40%),
+                radial-gradient(ellipse at 50% 100%, rgba(0,0,0,0.4) 0%, transparent 40%);
+            z-index: 2;
+            pointer-events: none;
+        }
+
+        /* ---------- DUST PARTICLES ---------- */
+        .dust-canvas {
+            position: fixed;
+            inset: 0;
+            z-index: 3;
+            pointer-events: none;
+        }
+
+        /* ---------- VINE CANVAS ---------- */
+        #vine-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 9999;
+            pointer-events: none;
+            /* Make Vecna/crimson reads pop without blocking UI */
+            filter: saturate(1.18) contrast(1.06);
+        }
+
+        /* ---------- WIRE SVG ---------- */
+        .wire-svg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 8;
+            pointer-events: none;
+        }
+
+        /* ---------- LIGHTS CONTAINER ---------- */
+        .lights-container {
+            position: absolute;
+            top: 8%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 92%;
+            max-width: 1100px;
+            z-index: 10;
+        }
+
+        /* ---------- ALPHABET ROWS ---------- */
+        .alphabet-wall-intro {
+            position: relative;
+            z-index: 10;
+        }
+
+        .alpha-row {
+            display: flex;
+            justify-content: center;
+            gap: 0;
+            margin-bottom: 28px;
+            position: relative;
+        }
+
+        .alpha-letter-wrap {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: clamp(30px, 4.5vw, 52px);
+            position: relative;
+        }
+
+        /* ---------- BULB — Teardrop shape ---------- */
+        .bulb {
+            width: 12px;
+            height: 18px;
+            border-radius: 50% 50% 45% 45% / 60% 60% 40% 40%;
+            position: relative;
+            margin-bottom: 6px;
+            opacity: 0.12;
+            transition: none;
+            filter: blur(0px);
+        }
+
+        /* Metallic screw cap */
+        .bulb::before {
+            content: '';
+            position: absolute;
+            top: -6px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 7px;
+            height: 8px;
+            background: linear-gradient(180deg, #555 0%, #333 40%, #444 60%, #333 100%);
+            border-radius: 2px 2px 0 0;
+            border: 1px solid #555;
+            box-shadow: inset 0 1px 0 rgba(255,255,255,0.1);
+        }
+
+        /* Small hook/wire nub on top */
+        .bulb::after {
+            content: '';
+            position: absolute;
+            top: -9px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 3px;
+            height: 4px;
+            background: #222;
+            border-radius: 1px;
+        }
+
+        /* Bulb colors — DIM (off) state */
+        .bulb.c-red    { background: radial-gradient(ellipse at 40% 30%, #3a1515, #1a0808); }
+        .bulb.c-yellow { background: radial-gradient(ellipse at 40% 30%, #3a3015, #1a1508); }
+        .bulb.c-green  { background: radial-gradient(ellipse at 40% 30%, #153a1f, #081a0d); }
+        .bulb.c-blue   { background: radial-gradient(ellipse at 40% 30%, #152a3a, #081520); }
+        .bulb.c-purple { background: radial-gradient(ellipse at 40% 30%, #2a153a, #150820); }
+        .bulb.c-orange { background: radial-gradient(ellipse at 40% 30%, #3a2515, #1a1008); }
+        .bulb.c-pink   { background: radial-gradient(ellipse at 40% 30%, #3a1530, #1a0818); }
+
+        /* Bulb colors — FULLY LIT */
+        .bulb.lit.c-red {
+            background: radial-gradient(ellipse at 35% 25%, #ff9999, #ff2233 40%, #cc1122);
+            box-shadow:
+                0 0 8px 2px #ff2233,
+                0 0 25px 6px rgba(255,34,51,0.6),
+                0 0 60px 15px rgba(255,34,51,0.25),
+                0 4px 80px 20px rgba(255,34,51,0.12);
+            opacity: 1;
+            filter: blur(0.3px);
+        }
+        .bulb.lit.c-yellow {
+            background: radial-gradient(ellipse at 35% 25%, #ffffaa, #ffdd22 40%, #ccaa11);
+            box-shadow:
+                0 0 8px 2px #ffdd22,
+                0 0 25px 6px rgba(255,221,34,0.6),
+                0 0 60px 15px rgba(255,221,34,0.25),
+                0 4px 80px 20px rgba(255,221,34,0.12);
+            opacity: 1;
+            filter: blur(0.3px);
+        }
+        .bulb.lit.c-green {
+            background: radial-gradient(ellipse at 35% 25%, #aaffcc, #33ff77 40%, #22cc55);
+            box-shadow:
+                0 0 8px 2px #33ff77,
+                0 0 25px 6px rgba(51,255,119,0.6),
+                0 0 60px 15px rgba(51,255,119,0.25),
+                0 4px 80px 20px rgba(51,255,119,0.12);
+            opacity: 1;
+            filter: blur(0.3px);
+        }
+        .bulb.lit.c-blue {
+            background: radial-gradient(ellipse at 35% 25%, #aaddff, #3399ff 40%, #2277cc);
+            box-shadow:
+                0 0 8px 2px #3399ff,
+                0 0 25px 6px rgba(51,153,255,0.6),
+                0 0 60px 15px rgba(51,153,255,0.25),
+                0 4px 80px 20px rgba(51,153,255,0.12);
+            opacity: 1;
+            filter: blur(0.3px);
+        }
+        .bulb.lit.c-purple {
+            background: radial-gradient(ellipse at 35% 25%, #ddaaff, #bb55ff 40%, #8833cc);
+            box-shadow:
+                0 0 8px 2px #bb55ff,
+                0 0 25px 6px rgba(187,85,255,0.6),
+                0 0 60px 15px rgba(187,85,255,0.25),
+                0 4px 80px 20px rgba(187,85,255,0.12);
+            opacity: 1;
+            filter: blur(0.3px);
+        }
+        .bulb.lit.c-orange {
+            background: radial-gradient(ellipse at 35% 25%, #ffcc99, #ff9933 40%, #cc7722);
+            box-shadow:
+                0 0 8px 2px #ff9933,
+                0 0 25px 6px rgba(255,153,51,0.6),
+                0 0 60px 15px rgba(255,153,51,0.25),
+                0 4px 80px 20px rgba(255,153,51,0.12);
+            opacity: 1;
+            filter: blur(0.3px);
+        }
+        .bulb.lit.c-pink {
+            background: radial-gradient(ellipse at 35% 25%, #ffaadd, #ff44aa 40%, #cc2288);
+            box-shadow:
+                0 0 8px 2px #ff44aa,
+                0 0 25px 6px rgba(255,68,170,0.6),
+                0 0 60px 15px rgba(255,68,170,0.25),
+                0 4px 80px 20px rgba(255,68,170,0.12);
+            opacity: 1;
+            filter: blur(0.3px);
+        }
+
+        /* Dim-lit state for ambient flickers */
+        .bulb.dim-lit { opacity: 0.3; }
+        .bulb.dim-lit.c-red    { background: radial-gradient(ellipse at 35% 25%, #cc5555, #881515); box-shadow: 0 0 6px 2px rgba(170,34,34,0.4); }
+        .bulb.dim-lit.c-yellow { background: radial-gradient(ellipse at 35% 25%, #ccaa55, #886615); box-shadow: 0 0 6px 2px rgba(170,136,17,0.4); }
+        .bulb.dim-lit.c-green  { background: radial-gradient(ellipse at 35% 25%, #55cc77, #228844); box-shadow: 0 0 6px 2px rgba(34,170,68,0.4); }
+        .bulb.dim-lit.c-blue   { background: radial-gradient(ellipse at 35% 25%, #5588cc, #224488); box-shadow: 0 0 6px 2px rgba(34,68,170,0.4); }
+        .bulb.dim-lit.c-purple { background: radial-gradient(ellipse at 35% 25%, #8855cc, #553388); box-shadow: 0 0 6px 2px rgba(85,51,170,0.4); }
+        .bulb.dim-lit.c-orange { background: radial-gradient(ellipse at 35% 25%, #cc8855, #885522); box-shadow: 0 0 6px 2px rgba(170,85,34,0.4); }
+        .bulb.dim-lit.c-pink   { background: radial-gradient(ellipse at 35% 25%, #cc5599, #883366); box-shadow: 0 0 6px 2px rgba(170,51,102,0.4); }
+
+        /* Wall glow halo when bulb is lit */
+        .alpha-letter-wrap .wall-glow {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 50px;
+            height: 70px;
+            border-radius: 50%;
+            opacity: 0;
+            pointer-events: none;
+            z-index: -1;
+            transition: opacity 0.1s;
+        }
+
+        .alpha-letter-wrap.glow-active .wall-glow { opacity: 1; }
+
+        .wall-glow.g-red    { background: radial-gradient(ellipse, rgba(255,34,51,0.15) 0%, transparent 70%); }
+        .wall-glow.g-yellow { background: radial-gradient(ellipse, rgba(255,221,34,0.15) 0%, transparent 70%); }
+        .wall-glow.g-green  { background: radial-gradient(ellipse, rgba(51,255,119,0.15) 0%, transparent 70%); }
+        .wall-glow.g-blue   { background: radial-gradient(ellipse, rgba(51,153,255,0.15) 0%, transparent 70%); }
+        .wall-glow.g-purple { background: radial-gradient(ellipse, rgba(187,85,255,0.15) 0%, transparent 70%); }
+        .wall-glow.g-orange { background: radial-gradient(ellipse, rgba(255,153,51,0.15) 0%, transparent 70%); }
+        .wall-glow.g-pink   { background: radial-gradient(ellipse, rgba(255,68,170,0.15) 0%, transparent 70%); }
+
+        /* ---------- WALL LETTER — Hand-painted look ---------- */
+        .alpha-char {
+            font-family: 'Special Elite', cursive;
+            font-size: clamp(1.6rem, 3.8vw, 3.2rem);
+            color: #1a1510;
+            font-weight: 700;
+            letter-spacing: 2px;
+            user-select: none;
+            transition: color 0.15s, text-shadow 0.15s;
+            position: relative;
+            /* Slight random tilt for painted feel — applied via JS */
+        }
+
+        /* Paint drip effect */
+        .alpha-char::after {
+            content: attr(data-letter);
+            position: absolute;
+            top: 1px;
+            left: 1px;
+            color: rgba(0, 0, 0, 0.15);
+            z-index: -1;
+            filter: blur(1px);
+        }
+
+        /* When illuminated by bulb */
+        .alpha-char.illuminated {
+            color: rgba(255, 242, 220, 0.85);
+            text-shadow:
+                0 0 8px rgba(255, 200, 140, 0.5),
+                0 0 25px rgba(255, 160, 100, 0.2),
+                0 1px 2px rgba(0,0,0,0.8);
+        }
+
+        /* ---------- FLICKER OVERLAY ---------- */
+        .flicker-screen {
+            position: fixed;
+            inset: 0;
+            z-index: 100;
+            pointer-events: none;
+            background: transparent;
+        }
+        .flicker-screen.flash       { background: rgba(255, 255, 255, 0.04); }
+        .flicker-screen.dark-flash  { background: rgba(0, 0, 0, 0.75); }
+        .flicker-screen.red-flash   { background: rgba(180, 0, 0, 0.05); }
+        .flicker-screen.big-red     { background: rgba(180, 0, 0, 0.12); }
+
+        /* ============================================
+           NAME REVEAL — STRANGER THINGS TITLE ANIMATION
+           ============================================ */
+        .st-title-reveal {
+            position: fixed;
+            inset: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 50;
+            opacity: 0;
+            pointer-events: none;
+            background: #000;
+            transition: opacity 0.8s;
+        }
+
+        .st-title-reveal.active {
+            opacity: 1;
+        }
+
+        /* Horizontal converging lines */
+        .st-line-top, .st-line-bottom {
+            position: absolute;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: #d72631;
+            box-shadow: 0 0 8px rgba(215,38,49,0.6), 0 0 20px rgba(215,38,49,0.3);
+            transform: scaleX(0);
+            transition: transform 2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        .st-line-top { top: calc(50% - 80px); }
+        .st-line-bottom { bottom: calc(50% - 80px); }
+
+        .st-title-reveal.animate .st-line-top,
+        .st-title-reveal.animate .st-line-bottom {
+            transform: scaleX(1);
+        }
+
+        /* Title text container */
+        .st-title-text {
+            position: relative;
+            text-align: center;
+            z-index: 2;
+        }
+
+        .st-title-line {
+            display: block;
+            font-family: 'Righteous', cursive;
+            color: #d72631;
+            text-transform: uppercase;
+            letter-spacing: 0.6em;
+            line-height: 1.1;
+            opacity: 0;
+            transition: opacity 0.5s;
+            white-space: nowrap;
+            position: relative;
+        }
+
+        .st-title-line.first-name {
+            font-size: clamp(3.5rem, 10vw, 9rem);
+        }
+
+        .st-title-line.last-name {
+            font-size: clamp(2.5rem, 7vw, 6rem);
+            margin-top: 0.1em;
+        }
+
+        .st-title-line.visible {
+            opacity: 1;
+        }
+
+        .st-title-line span {
+            display: inline-block;
+            text-shadow:
+                0 0 20px rgba(215,38,49,0.8),
+                0 0 60px rgba(215,38,49,0.4),
+                0 0 120px rgba(215,38,49,0.2),
+                0 0 200px rgba(215,38,49,0.1);
+        }
+
+        /* Letter tracking animation */
+        .st-title-line.tracking span {
+            animation: st-letter-track var(--track-duration, 3.5s) cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+            animation-delay: var(--delay, 0s);
+        }
+
+        @keyframes st-letter-track {
+            0% {
+                letter-spacing: 0.8em;
+                opacity: 0;
+                filter: blur(8px);
+            }
+            30% {
+                opacity: 0.6;
+                filter: blur(3px);
+            }
+            70% {
+                letter-spacing: 0.6em;
+                filter: blur(0px);
+            }
+            100% {
+                letter-spacing: 0.02em;
+                opacity: 1;
+                filter: blur(0px);
+            }
+        }
+
+        /* Glow pulse after title locks in */
+        .st-title-line.glow-pulse span {
+            animation: st-glow-breathe 2s ease-in-out infinite;
+        }
+
+        @keyframes st-glow-breathe {
+            0%, 100% {
+                text-shadow:
+                    0 0 20px rgba(215,38,49,0.8),
+                    0 0 60px rgba(215,38,49,0.4),
+                    0 0 120px rgba(215,38,49,0.2);
+            }
+            50% {
+                text-shadow:
+                    0 0 30px rgba(215,38,49,1),
+                    0 0 80px rgba(215,38,49,0.6),
+                    0 0 150px rgba(215,38,49,0.35),
+                    0 0 250px rgba(215,38,49,0.15);
+            }
+        }
+
+        /* Ambient particle glow behind title */
+        .st-title-reveal .ambient-glow {
+            position: absolute;
+            width: 600px;
+            height: 300px;
+            border-radius: 50%;
+            background: radial-gradient(ellipse, rgba(215,38,49,0.08) 0%, transparent 70%);
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 1;
+            animation: ambient-pulse 3s ease-in-out infinite;
+        }
+
+        @keyframes ambient-pulse {
+            0%, 100% { opacity: 0.5; transform: translate(-50%, -50%) scale(1); }
+            50% { opacity: 1; transform: translate(-50%, -50%) scale(1.15); }
+        }
+
+        /* ---------- FADE OVERLAY ---------- */
+        .fade-overlay {
+            position: fixed;
+            inset: 0;
+            background: #000;
+            z-index: 200;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 1.8s ease-in;
+        }
+        .fade-overlay.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        /* ---------- SKIP ---------- */
+        .skip-btn {
+            position: fixed;
+            bottom: 28px;
+            right: 36px;
+            z-index: 300;
+            background: none;
+            border: 1px solid rgba(255,255,255,0.06);
+            color: rgba(255,255,255,0.12);
+            font-family: 'Special Elite', cursive;
+            font-size: 0.7rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            padding: 8px 22px;
+            cursor: pointer;
+            transition: all 0.3s;
+            border-radius: 3px;
+        }
+        .skip-btn:hover {
+            color: rgba(255,255,255,0.4);
+            border-color: rgba(255,255,255,0.2);
+        }
+
+        /* ---------- RESPONSIVE ---------- */
+        @media (max-width: 768px) {
+            .lights-container { top: 14%; width: 96%; }
+            .alpha-letter-wrap { width: clamp(20px, 3.8vw, 34px); }
+            .alpha-char { font-size: clamp(1rem, 3.2vw, 2rem); }
+            .bulb { width: 9px; height: 14px; }
+            .st-title-line.first-name { font-size: clamp(2.5rem, 12vw, 5rem); }
+            .st-title-line.last-name { font-size: clamp(1.8rem, 8vw, 3.5rem); }
+        }
+
+        @media (max-width: 480px) {
+            .lights-container { top: 16%; }
+            .alpha-letter-wrap { width: clamp(15px, 3.5vw, 25px); }
+            .alpha-char { font-size: clamp(0.7rem, 2.6vw, 1.3rem); }
+            .bulb { width: 6px; height: 10px; }
+            .alpha-row { margin-bottom: 16px; }
+            .st-title-line.first-name { font-size: clamp(2rem, 14vw, 4rem); }
+            .st-title-line.last-name { font-size: clamp(1.5rem, 10vw, 3rem); }
+        }
+    </style>
+</head>
+<body>
+    <!-- Dark room / Byers house wall -->
+    <div class="room"></div>
+
+    <!-- Dust particles -->
+    <canvas class="dust-canvas" id="dust-canvas"></canvas>
+
+    <!-- Vine animation overlay -->
+    <canvas id="vine-canvas"></canvas>
+
+    <!-- Wire SVG — drawn dynamically -->
+    <svg class="wire-svg" id="wire-svg"></svg>
+
+    <!-- Flicker screen -->
+    <div class="flicker-screen" id="flicker-screen"></div>
+
+    <!-- Christmas Lights Alphabet Wall -->
+    <div class="lights-container">
+        <div class="alphabet-wall-intro" id="alphabet-wall">
+            <div class="alpha-row" id="row1"></div>
+            <div class="alpha-row" id="row2"></div>
+            <div class="alpha-row" id="row3"></div>
+        </div>
+    </div>
+
+    <!-- Stranger Things Title Reveal -->
+    <div class="st-title-reveal" id="st-title-reveal">
+        <div class="ambient-glow"></div>
+        <div class="st-line-top"></div>
+        <div class="st-line-bottom"></div>
+        <div class="st-title-text">
+            <span class="st-title-line first-name" id="st-first">
+                <span>R</span><span>H</span><span>Y</span><span>T</span><span>H</span><span>M</span>
+            </span>
+            <span class="st-title-line last-name" id="st-last">
+                <span>G</span><span>U</span><span>P</span><span>T</span><span>A</span>
+            </span>
+        </div>
+    </div>
+
+    <!-- Fade to black -->
+    <div class="fade-overlay" id="fade-overlay"></div>
+
+    <!-- Skip -->
+    <button class="skip-btn" id="skip-btn">Skip &#9654;</button>
+
+    <script>
+        /* ============================================
+           INTRO ANIMATION — CHRISTMAS LIGHTS SCENE
+           ============================================ */
+
+        const NAME = 'RHYTHM';
+        const COLORS = ['c-red','c-yellow','c-green','c-blue','c-purple','c-orange','c-pink'];
+        const GLOW_COLORS = ['g-red','g-yellow','g-green','g-blue','g-purple','g-orange','g-pink'];
+
+        // Build alphabet rows
+        const rowDefs = [
+            { id: 'row1', letters: 'ABCDEFGHI' },
+            { id: 'row2', letters: 'JKLMNOPQR' },
+            { id: 'row3', letters: 'STUVWXYZ' }
+        ];
+
+        const letterMap = {};
+
+        rowDefs.forEach((row, ri) => {
+            const rowEl = document.getElementById(row.id);
+            for (let i = 0; i < row.letters.length; i++) {
+                const ch = row.letters[i];
+                const wrap = document.createElement('div');
+                wrap.className = 'alpha-letter-wrap';
+
+                const colorIdx = (ri * 9 + i) % COLORS.length;
+
+                // Wall glow halo
+                const glow = document.createElement('div');
+                glow.className = `wall-glow ${GLOW_COLORS[colorIdx]}`;
+                wrap.appendChild(glow);
+
+                const bulb = document.createElement('div');
+                bulb.className = `bulb ${COLORS[colorIdx]}`;
+
+                const charEl = document.createElement('div');
+                charEl.className = 'alpha-char';
+                charEl.textContent = ch;
+                charEl.setAttribute('data-letter', ch);
+                // Random slight rotation for hand-painted feel
+                charEl.style.transform = `rotate(${(Math.random() - 0.5) * 6}deg)`;
+
+                wrap.appendChild(bulb);
+                wrap.appendChild(charEl);
+                rowEl.appendChild(wrap);
+
+                letterMap[ch] = { bulb, char: charEl, wrap, glow };
+            }
+        });
+
+        // --- Draw catenary wire connecting bulbs ---
+        function drawWires() {
+            const svg = document.getElementById('wire-svg');
+            svg.innerHTML = '';
+            svg.setAttribute('viewBox', `0 0 ${window.innerWidth} ${window.innerHeight}`);
+
+            rowDefs.forEach((row) => {
+                const rowEl = document.getElementById(row.id);
+                const wraps = rowEl.querySelectorAll('.alpha-letter-wrap');
+                if (wraps.length < 2) return;
+
+                const points = [];
+                wraps.forEach(w => {
+                    const bulb = w.querySelector('.bulb');
+                    const rect = bulb.getBoundingClientRect();
+                    points.push({
+                        x: rect.left + rect.width / 2,
+                        y: rect.top
+                    });
+                });
+
+                // Draw a sagging wire between each pair of bulbs
+                let d = `M ${points[0].x} ${points[0].y}`;
+                for (let i = 1; i < points.length; i++) {
+                    const prev = points[i - 1];
+                    const curr = points[i];
+                    const midX = (prev.x + curr.x) / 2;
+                    const sag = 8 + Math.random() * 5; // natural sag
+                    const midY = Math.max(prev.y, curr.y) + sag;
+                    d += ` Q ${midX} ${midY} ${curr.x} ${curr.y}`;
+                }
+
+                const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+                path.setAttribute('d', d);
+                path.setAttribute('stroke', '#1a1a1a');
+                path.setAttribute('stroke-width', '2');
+                path.setAttribute('fill', 'none');
+                path.setAttribute('stroke-linecap', 'round');
+                svg.appendChild(path);
+
+                // Thinner highlight wire
+                const path2 = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+                path2.setAttribute('d', d);
+                path2.setAttribute('stroke', '#2a2a2a');
+                path2.setAttribute('stroke-width', '1');
+                path2.setAttribute('fill', 'none');
+                path2.setAttribute('stroke-linecap', 'round');
+                path2.setAttribute('stroke-dasharray', '4 6');
+                svg.appendChild(path2);
+            });
+        }
+
+        // Draw wires after layout settles
+        setTimeout(drawWires, 100);
+        window.addEventListener('resize', () => setTimeout(drawWires, 50));
+
+        // --- Enhanced Dust Particles ---
+        const dustCanvas = document.getElementById('dust-canvas');
+        const dCtx = dustCanvas.getContext('2d');
+        let dusts = [];
+
+        function resizeDust() {
+            dustCanvas.width = window.innerWidth;
+            dustCanvas.height = window.innerHeight;
+        }
+        resizeDust();
+        window.addEventListener('resize', resizeDust);
+
+        class Dust {
+            constructor() { this.reset(true); }
+            reset(init) {
+                this.x = Math.random() * dustCanvas.width;
+                this.y = init ? Math.random() * dustCanvas.height : dustCanvas.height + 10;
+                this.size = Math.random() * 1.5 + 0.3;
+                this.sx = (Math.random() - 0.5) * 0.15;
+                this.sy = -(Math.random() * 0.12 + 0.02);
+                this.o = Math.random() * 0.2 + 0.02;
+                this.life = 0;
+                this.max = Math.random() * 900 + 400;
+                // Warm brownish tint
+                this.r = 160 + Math.floor(Math.random() * 40);
+                this.g = 130 + Math.floor(Math.random() * 30);
+                this.b = 90 + Math.floor(Math.random() * 30);
+            }
+            update() {
+                this.x += this.sx + Math.sin(this.life * 0.008) * 0.05;
+                this.y += this.sy;
+                this.life++;
+                if (this.life > this.max || this.y < -5) this.reset(false);
+            }
+            draw() {
+                dCtx.beginPath();
+                dCtx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                dCtx.fillStyle = `rgba(${this.r}, ${this.g}, ${this.b}, ${this.o})`;
+                dCtx.fill();
+            }
+        }
+
+        for (let i = 0; i < 70; i++) dusts.push(new Dust());
+
+        function animDust() {
+            dCtx.clearRect(0, 0, dustCanvas.width, dustCanvas.height);
+            dusts.forEach(d => { d.update(); d.draw(); });
+            requestAnimationFrame(animDust);
+        }
+        animDust();
+
+        // --- Helpers ---
+        const sleep = ms => new Promise(r => setTimeout(r, ms));
+        const flickScr = document.getElementById('flicker-screen');
+
+        function lightUp(l) {
+            const e = letterMap[l];
+            if (e) {
+                e.bulb.classList.add('lit');
+                e.bulb.classList.remove('dim-lit');
+                e.char.classList.add('illuminated');
+                e.wrap.classList.add('glow-active');
+            }
+        }
+        function dimLight(l) {
+            const e = letterMap[l];
+            if (e) {
+                e.bulb.classList.add('dim-lit');
+                e.bulb.classList.remove('lit');
+                e.char.classList.remove('illuminated');
+                e.wrap.classList.remove('glow-active');
+            }
+        }
+        function turnOff(l) {
+            const e = letterMap[l];
+            if (e) {
+                e.bulb.classList.remove('lit', 'dim-lit');
+                e.char.classList.remove('illuminated');
+                e.wrap.classList.remove('glow-active');
+            }
+        }
+        function allOff() { Object.keys(letterMap).forEach(turnOff); }
+        function allOn()  { Object.keys(letterMap).forEach(lightUp); }
+
+        async function flash(cls, dur) {
+            flickScr.className = 'flicker-screen ' + cls;
+            await sleep(dur);
+            flickScr.className = 'flicker-screen';
+        }
+
+        // --- Ambient random dim flickers ---
+        let ambientOn = true;
+        function ambient() {
+            if (!ambientOn) return;
+            const keys = Object.keys(letterMap);
+            const k = keys[Math.floor(Math.random() * keys.length)];
+            dimLight(k);
+            setTimeout(() => { turnOff(k); }, 50 + Math.random() * 150);
+            setTimeout(ambient, 150 + Math.random() * 1000);
+        }
+
+        // --- MAIN SEQUENCE ---
+        let aborted = false;
+
+        async function run() {
+            // Phase 0: Eerie silence — dim flickers (3s)
+            ambient();
+            await sleep(3000);
+            if (aborted) return;
+
+            // Phase 1: Something tries to communicate — nervous random flickers
+            ambientOn = false;
+            await nervousFlickers();
+            if (aborted) return;
+
+            // Phase 2: Spell R-H-Y-T-H-M one letter at a time
+            await spellName();
+            if (aborted) return;
+
+            // Phase 3: Hold — the name letters glow
+            await sleep(1500);
+            if (aborted) return;
+
+            // Phase 4: Flicker storm — all lights go crazy
+            await flickerStorm();
+            if (aborted) return;
+
+            // Phase 5: Total darkness
+            allOff();
+            await flash('dark-flash', 400);
+            await sleep(1000);
+            if (aborted) return;
+
+            // Phase 6: Stranger Things title reveal
+            await revealNameST();
+            if (aborted) return;
+
+            // Phase 7: Fade to black → portfolio
+            await fadeOut();
+        }
+
+        async function nervousFlickers() {
+            for (let i = 0; i < 22; i++) {
+                if (aborted) return;
+                const keys = Object.keys(letterMap);
+                const n = Math.floor(Math.random() * 6) + 1;
+                const picks = [];
+                for (let j = 0; j < n; j++) picks.push(keys[Math.floor(Math.random() * keys.length)]);
+
+                picks.forEach(l => lightUp(l));
+                await sleep(30 + Math.random() * 80);
+                picks.forEach(l => turnOff(l));
+                await sleep(20 + Math.random() * 150);
+
+                if (Math.random() > 0.75) await flash('red-flash', 25);
+            }
+            allOff();
+            await sleep(800);
+        }
+
+        async function spellName() {
+            for (let i = 0; i < NAME.length; i++) {
+                if (aborted) return;
+                const target = NAME[i];
+
+                // Random wrong letters — jittery, scared entity
+                const fakes = Math.floor(Math.random() * 5) + 2;
+                for (let f = 0; f < fakes; f++) {
+                    if (aborted) return;
+                    const keys = Object.keys(letterMap);
+                    const wrong = keys[Math.floor(Math.random() * keys.length)];
+                    lightUp(wrong);
+                    await sleep(20 + Math.random() * 45);
+                    turnOff(wrong);
+                    await sleep(10 + Math.random() * 35);
+                }
+
+                // Quick dark beat
+                await sleep(120);
+
+                // REVEAL the real letter with a flash
+                await flash('big-red', 50);
+                lightUp(target);
+
+                // Dramatic pause — letter stays lit
+                await sleep(700 + Math.random() * 300);
+            }
+        }
+
+        async function flickerStorm() {
+            for (let wave = 0; wave < 6; wave++) {
+                if (aborted) return;
+
+                allOn();
+                await flash('flash', 30);
+                await sleep(40);
+                allOff();
+                await sleep(50);
+
+                for (let j = 0; j < 12; j++) {
+                    if (aborted) return;
+                    const keys = Object.keys(letterMap);
+                    const count = Math.floor(keys.length * (0.2 + Math.random() * 0.6));
+                    const shuffled = [...keys].sort(() => Math.random() - 0.5).slice(0, count);
+                    shuffled.forEach(l => lightUp(l));
+                    await sleep(15 + Math.random() * 35);
+                    allOff();
+                    await sleep(10 + Math.random() * 20);
+                }
+
+                await flash('dark-flash', 100);
+                await sleep(50);
+            }
+
+            // FINAL blast
+            allOn();
+            await flash('flash', 80);
+            await sleep(200);
+            await flash('flash', 40);
+            await sleep(120);
+        }
+
+        /* --- STRANGER THINGS TITLE REVEAL --- */
+        async function revealNameST() {
+            const reveal = document.getElementById('st-title-reveal');
+            const firstName = document.getElementById('st-first');
+            const lastName = document.getElementById('st-last');
+
+            // Fade in the black background
+            reveal.classList.add('active');
+            await sleep(600);
+            if (aborted) return;
+
+            // Trigger horizontal lines converging
+            reveal.classList.add('animate');
+            await sleep(800);
+            if (aborted) return;
+
+            // Show first name with letter tracking animation
+            firstName.classList.add('visible', 'tracking');
+            firstName.querySelectorAll('span').forEach((s, i) => {
+                s.style.setProperty('--delay', `${i * 0.08}s`);
+                s.style.setProperty('--track-duration', '3.5s');
+            });
+            await sleep(2000);
+            if (aborted) return;
+
+            // Show last name
+            lastName.classList.add('visible', 'tracking');
+            lastName.querySelectorAll('span').forEach((s, i) => {
+                s.style.setProperty('--delay', `${i * 0.1}s`);
+                s.style.setProperty('--track-duration', '3s');
+            });
+            await sleep(3000);
+            if (aborted) return;
+
+            // Add glow pulse after letters lock in
+            firstName.classList.add('glow-pulse');
+            lastName.classList.add('glow-pulse');
+
+            // Hold title visible
+            await sleep(2500);
+        }
+
+        async function fadeOut() {
+            const ov = document.getElementById('fade-overlay');
+            ov.classList.add('active');
+            await sleep(2200);
+            window.location.href = 'portfolio.html';
+        }
+
+        // --- Skip ---
+        function skipIntro() {
+            aborted = true;
+            ambientOn = false;
+            const ov = document.getElementById('fade-overlay');
+            ov.classList.add('active');
+            setTimeout(() => { window.location.href = 'portfolio.html'; }, 900);
+        }
+
+        document.getElementById('skip-btn').addEventListener('click', skipIntro);
+
+        // --- GO ---
+        window.addEventListener('load', () => {
+            setTimeout(run, 600);
+        });
+    </script>
+
+    <script src="script.js"></script>
+</body>
+</html>
